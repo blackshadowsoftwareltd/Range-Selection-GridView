@@ -70,7 +70,6 @@ class Home extends ConsumerWidget {
                       _endIndex.state = null;
                       _selectedIndex.state = null;
                     }
-                    print('pressed');
                   },
                   child: Button(
                     key: _keys[index],

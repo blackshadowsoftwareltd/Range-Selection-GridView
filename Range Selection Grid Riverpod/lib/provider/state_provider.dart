@@ -12,9 +12,11 @@ final boxDetails = StateProvider<List<OffsetDetails?>>((ref) => List.filled(
     ref.read(keys.state).state.length,
     OffsetDetails(xf: null, xe: null, yf: null, ye: null)));
 
-final onPanStart = StateProvider.family<void, DragStartDetails>((ref, details) {
+final onPanStart =
+    StateProvider.family<void, DragStartDetails>((ref, details) async {
   final _boxDetails = ref.read(boxDetails.state).state;
-  final _selectedIndex = ref.read(endIndex.state);
+
+  final _selectedIndex = ref.read(selectedIndex.state);
   final _startIndex = ref.read(startIndex.state);
   final _endIndex = ref.read(endIndex.state);
 
@@ -23,17 +25,19 @@ final onPanStart = StateProvider.family<void, DragStartDetails>((ref, details) {
   final _start = _boxDetails.where((e) {
     return _dx > e!.xf! && _dx < e.xe! && _dy > e.yf! && _dy < e.ye!;
   }).toList();
-  final _index = _boxDetails.indexOf(_start.first);
-
-  _startIndex.state = _index;
-  _endIndex.state = _index;
-  _selectedIndex.state = null;
+  await Future.delayed(const Duration(seconds: 0));
+  if (_start.isNotEmpty) {
+    final _index = _boxDetails.indexOf(_start.first);
+    _startIndex.state = _index;
+    _endIndex.state = _index;
+    _selectedIndex.state = null;
+  }
 });
 
 final onPanUpdate =
-    StateProvider.family<void, DragUpdateDetails>((ref, details) {
+    StateProvider.family<void, DragUpdateDetails>((ref, details) async {
   final _boxDetails = ref.read(boxDetails.state).state;
-  final _selectedIndex = ref.read(endIndex.state);
+  final _selectedIndex = ref.read(selectedIndex.state);
   final _endIndex = ref.read(endIndex.state);
   late int _index;
   final _dx = details.globalPosition.dx;
@@ -41,14 +45,11 @@ final onPanUpdate =
   final _start = _boxDetails.where((e) {
     return _dx >= e!.xf! && _dx <= e.xe! && _dy >= e.yf! && _dy <= e.ye!;
   }).toList();
-  try {
-    if (_start.isNotEmpty) {
-      _index = _boxDetails.indexOf(_start.first);
-      _selectedIndex.state = null;
-      _endIndex.state = _index;
-    }
-  } catch (e) {
-    print(e.toString());
+  await Future.delayed(const Duration(seconds: 0));
+  if (_start.isNotEmpty) {
+    _index = _boxDetails.indexOf(_start.first);
+    _selectedIndex.state = null;
+    _endIndex.state = _index;
   }
 });
 bool isSelected(
