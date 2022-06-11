@@ -89,18 +89,4 @@ class OffsetDetails {
 
   OffsetDetails(
       {required this.xf, required this.xe, required this.yf, required this.ye});
-
-  // OffsetDetails copyWith({
-  //   double? xf,
-  //   double? xe,
-  //   double? yf,
-  //   double? ye,
-  // }) {
-  //   return OffsetDetails(
-  //     xf: xf ?? this.xf,
-  //     xe: xe ?? this.xe,
-  //     yf: yf ?? this.yf,
-  //     ye: ye ?? this.ye,
-  //   );
-  // }
 }
